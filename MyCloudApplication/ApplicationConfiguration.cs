@@ -45,6 +45,7 @@ namespace MyCloudApplication
         {
             Services.AddScoped<IAuth, AuthService>();
             Services.AddScoped<IStorage, StorageService>();
+            Services.AddScoped<IFiles, FilesService>();
             Services.Configure<StorageSettingsDTO>(configuration.GetSection("StorageSettings"));
             return Services;
         }
