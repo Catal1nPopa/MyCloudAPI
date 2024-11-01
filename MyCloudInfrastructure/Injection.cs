@@ -9,6 +9,7 @@ namespace MyCloudInfrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IFilesRepository, FilesRepository>();
             services.AddScoped<MyDbContext>();
             return services;
         }

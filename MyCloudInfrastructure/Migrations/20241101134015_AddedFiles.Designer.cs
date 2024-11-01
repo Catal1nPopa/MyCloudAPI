@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyCloudInfrastructure.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241101134015_AddedFiles")]
+    partial class AddedFiles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,7 +53,7 @@ namespace MyCloudInfrastructure.Migrations
                     b.ToTable("usersLogins");
                 });
 
-            modelBuilder.Entity("MyCloudDomain.Files.FileRecordEntity", b =>
+            modelBuilder.Entity("MyCloudDomain.Auth.FileRecordEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -60,9 +63,6 @@ namespace MyCloudInfrastructure.Migrations
 
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<long>("FileLength")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("FileName")
                         .IsRequired()
