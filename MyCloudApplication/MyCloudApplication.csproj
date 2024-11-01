@@ -6,4 +6,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyCloudDomain\MyCloudDomain.csproj" />
+    <ProjectReference Include="..\MyCloudHelper\MyCloudHelper.csproj" />
+    <ProjectReference Include="..\MyCloudInfrastructure\MyCloudInfrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
