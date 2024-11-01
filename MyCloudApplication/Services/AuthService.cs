@@ -71,7 +71,7 @@ namespace MyCloudApplication.Services
         public async Task<bool> CreateUserLogin(CreateUserLoginDTO userDTO)
         {
             var passwordHash = HashPassword(userDTO.Password, out var salt);
-            var user = new AuthRequestEntity(userDTO.UserName, passwordHash, salt, userDTO.Role);
+            var user = new AuthRequestEntity(userDTO.UserName, passwordHash, Convert.ToHexString(salt), userDTO.Role);
 
             return await _authRepository.createUserLogin(user.Adapt<CreateUserLoginEntitiy>());
         }
