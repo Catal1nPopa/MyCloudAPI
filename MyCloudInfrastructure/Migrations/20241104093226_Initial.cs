@@ -7,13 +7,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyCloudInfrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedFiles : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "files",
+                name: "filesAdded",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -22,11 +22,28 @@ namespace MyCloudInfrastructure.Migrations
                     GroupId = table.Column<int>(type: "integer", nullable: true),
                     FileName = table.Column<string>(type: "text", nullable: false),
                     FilePath = table.Column<string>(type: "text", nullable: false),
+                    FileLength = table.Column<long>(type: "bigint", nullable: false),
                     DateAdded = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_files", x => x.Id);
+                    table.PrimaryKey("PK_filesAdded", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "usersLogins",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserName = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false),
+                    Role = table.Column<string>(type: "text", nullable: false),
+                    Salt = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_usersLogins", x => x.Id);
                 });
         }
 
@@ -34,7 +51,10 @@ namespace MyCloudInfrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "files");
+                name: "filesAdded");
+
+            migrationBuilder.DropTable(
+                name: "usersLogins");
         }
     }
 }

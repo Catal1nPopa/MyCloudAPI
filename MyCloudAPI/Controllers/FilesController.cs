@@ -16,7 +16,7 @@ namespace MyCloudAPI.Controllers
         public async Task<IActionResult> UploadFile(IFormFile file, int userId)
         {
             var testFile = new FileRecordModel(
-                1, userId, null, file.FileName, "fake path", file.Length, DateTime.UtcNow);
+                userId, null, file.FileName, file.Length, DateTime.UtcNow);
             await _files.UploadFile(file, testFile.Adapt<FileRecordDTO>());
             return Ok();
         }

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using MyCloudApplication.DTOs;
 using MyCloudApplication.Interfaces;
-using MyCloudDomain.Auth;
 using MyCloudDomain.Files;
 using MyCloudDomain.Interfaces;
 
@@ -27,19 +26,27 @@ namespace MyCloudApplication.Services
 
             var filePath = Path.Combine(userFolderPath, fileRecord.FileName);
 
-            try
+            if (File.Exists(filePath))
             {
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileRecord.FileName);
+                string fileExtension = Path.GetExtension(fileRecord.FileName);
+                int count = 1;
+
+                do
                 {
-                    await file.CopyToAsync(stream);
-                    await _fileRepository.UploadFile(fileRecord.Adapt<FileRecordEntity>());
-                }
-            }
-            catch
-            {
-                throw new Exception($"Eroare la salvare fisier: nume: {fileRecord.FileName}, utilizator: {fileRecord.UserId}");
+                    string newFileName = $"{fileNameWithoutExtension} ({count}){fileExtension}";
+                    filePath = Path.Combine(userFolderPath, newFileName);
+                    count++;
+                } while (File.Exists(filePath));
             }
 
+            fileRecord.FilePath = filePath;
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+                await _fileRepository.UploadFile(fileRecord.Adapt<FileRecordEntity>());
+            }
         }
         public Task<List<FileRecordDTO>> GetGroupFiles(int groupId)
         {
