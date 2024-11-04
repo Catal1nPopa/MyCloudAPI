@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyCloudDomain.Files;
 using MyCloudDomain.Interfaces;
+using Npgsql;
 
 namespace MyCloudInfrastructure.Repository
 {
@@ -11,7 +12,7 @@ namespace MyCloudInfrastructure.Repository
         {
             try
             {
-                return await _myDbContext.files
+                return await _myDbContext.filesAdded
                     .Where(file => file.GroupId == groupId)
                     .ToListAsync();
             }
@@ -25,7 +26,7 @@ namespace MyCloudInfrastructure.Repository
         {
             try
             {
-                return await _myDbContext.files
+                return await _myDbContext.filesAdded
                     .Where(file => file.UserId == userId)
                     .ToListAsync();
             }
@@ -39,8 +40,12 @@ namespace MyCloudInfrastructure.Repository
         {
             try
             {
-                _myDbContext.files.Add(fileRecord);
+                _myDbContext.filesAdded.Add(fileRecord);
                 await _myDbContext.SaveChangesAsync();
+            }
+            catch(PostgresException ex)
+            {
+                Console.WriteLine(ex.Message);
             }
             catch
             {

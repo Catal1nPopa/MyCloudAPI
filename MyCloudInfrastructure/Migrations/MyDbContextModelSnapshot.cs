@@ -80,7 +80,7 @@ namespace MyCloudInfrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("files");
+                    b.ToTable("filesAdded");
                 });
 #pragma warning restore 612, 618
         }

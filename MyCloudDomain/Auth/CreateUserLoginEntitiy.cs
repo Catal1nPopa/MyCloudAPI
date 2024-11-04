@@ -1,4 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Cryptography;
 
 namespace MyCloudDomain.Auth
 {

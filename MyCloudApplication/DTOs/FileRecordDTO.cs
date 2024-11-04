@@ -8,7 +8,6 @@ namespace MyCloudApplication.DTOs
 {
     public class FileRecordDTO
     {
-        public int Id { get; set; }
         public int UserId { get; set; }
         public int? GroupId { get; set; }
         public string FileName { get; set; }
