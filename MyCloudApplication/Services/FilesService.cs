@@ -6,6 +6,7 @@ using MyCloudApplication.DTOs;
 using MyCloudApplication.Interfaces;
 using MyCloudDomain.Files;
 using MyCloudDomain.Interfaces;
+using System.Text.RegularExpressions;
 
 namespace MyCloudApplication.Services
 {
@@ -20,40 +21,51 @@ namespace MyCloudApplication.Services
         public async Task UploadFile(IFormFile file, FileRecordDTO fileRecord)
         {
             var storagePath = GetStoragePath(fileRecord.FileLength);
-
             var userFolderPath = Path.Combine(storagePath, "files", fileRecord.UserId.ToString());
             Directory.CreateDirectory(userFolderPath);
 
             var filePath = Path.Combine(userFolderPath, fileRecord.FileName);
+            int count = 1;
 
-            if (File.Exists(filePath))
+            while (File.Exists(filePath))
             {
-                string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileRecord.FileName);
-                string fileExtension = Path.GetExtension(fileRecord.FileName);
-                int count = 1;
-
-                do
-                {
-                    string newFileName = $"{fileNameWithoutExtension} ({count}){fileExtension}";
-                    filePath = Path.Combine(userFolderPath, newFileName);
-                    count++;
-                } while (File.Exists(filePath));
+                filePath = Path.Combine(userFolderPath, $"{Path.GetFileNameWithoutExtension(fileRecord.FileName)} ({count++}){Path.GetExtension(fileRecord.FileName)}");
             }
 
             fileRecord.FilePath = filePath;
-
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
                 await file.CopyToAsync(stream);
                 await _fileRepository.UploadFile(fileRecord.Adapt<FileRecordEntity>());
             }
         }
-        public Task<List<FileRecordDTO>> GetGroupFiles(int groupId)
+        public async Task<List<GetFileRecordDTO>> GetUserFiles(int userId)
         {
-            throw new NotImplementedException();
+            var userFilesPath = await _fileRepository.GetUserFiles(userId);
+            var fileRecords = new List<GetFileRecordDTO>();
+            foreach (var file in userFilesPath)
+            {
+                if (File.Exists(file.FilePath))
+                {
+                    var fileRecord = new GetFileRecordDTO
+                    {
+                        UserId = file.UserId,
+                        GroupId = file.GroupId,
+                        FileName = file.FileName,
+                        FileLength = file.FileLength,
+                        DateAdded = file.DateAdded
+                    };
+
+                    byte[] fileBytes = await File.ReadAllBytesAsync(file.FilePath);
+                    fileRecord.FileBase64 = Convert.ToBase64String(fileBytes);
+
+                    fileRecords.Add(fileRecord);
+                }
+            }
+            return fileRecords;
         }
 
-        public Task<List<FileRecordDTO>> GetUserFiles(int userId)
+        public Task<List<FileRecordDTO>> GetGroupFiles(int groupId)
         {
             throw new NotImplementedException();
         }
@@ -68,7 +80,7 @@ namespace MyCloudApplication.Services
                     return driveInfo.RootDirectory.FullName;
                 }
             }
-            throw new Exception("Nu este disponibila memorie");//StatusCodes.Status507InsufficientStorage
+            throw new Exception("Nu este disponibila memorie");
         }
     }
 }

@@ -7,7 +7,7 @@ namespace MyCloudApplication.Interfaces
     public interface IFiles
     {
         Task UploadFile(IFormFile file, FileRecordDTO fileRecord);
-        Task<List<FileRecordDTO>> GetUserFiles(int userId);
+        Task<List<GetFileRecordDTO>> GetUserFiles(int userId);
         Task<List<FileRecordDTO>> GetGroupFiles(int groupId);
     }
 }

@@ -12,13 +12,19 @@ namespace MyCloudAPI.Controllers
     public class FilesController(IFiles files) : ControllerBase
     {
         private readonly IFiles _files = files;
-        [HttpPost("upload")]
+        [HttpPost("uploadFile")]
         public async Task<IActionResult> UploadFile(IFormFile file, int userId)
         {
             var testFile = new FileRecordModel(
                 userId, null, file.FileName, file.Length, DateTime.UtcNow);
             await _files.UploadFile(file, testFile.Adapt<FileRecordDTO>());
             return Ok();
+        }
+
+        [HttpGet("getUserFiles")]
+        public async Task<IActionResult> GetUserFiles(int userId)
+        {
+            return Ok(await _files.GetUserFiles(userId));
         }
     }
 }
