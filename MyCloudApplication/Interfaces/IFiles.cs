@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using MyCloudApplication.DTOs;
+using MyCloudApplication.DTOs.Files;
 using MyCloudDomain.Files;
 
 namespace MyCloudApplication.Interfaces

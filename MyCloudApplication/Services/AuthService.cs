@@ -1,7 +1,7 @@
 ﻿using Mapster;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using MyCloudApplication.DTOs;
+using MyCloudApplication.DTOs.User;
 using MyCloudApplication.Interfaces;
 using MyCloudDomain.Auth;
 using MyCloudDomain.Interfaces;
