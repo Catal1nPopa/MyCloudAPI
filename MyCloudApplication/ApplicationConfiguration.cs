@@ -1,17 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MyCloudApplication.DTOs;
 using MyCloudApplication.Interfaces;
 using MyCloudApplication.Services;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MyCloudApplication
 {
@@ -46,6 +40,9 @@ namespace MyCloudApplication
             Services.AddScoped<IAuth, AuthService>();
             Services.AddScoped<IStorage, StorageService>();
             Services.AddScoped<IFiles, FilesService>();
+            Services.AddScoped<IGroups, GroupsService>();
+
+            Services.AddSignalR();
             Services.Configure<StorageSettingsDTO>(configuration.GetSection("StorageSettings"));
             return Services;
         }
