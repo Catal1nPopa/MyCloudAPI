@@ -10,6 +10,8 @@ namespace MyCloudInfrastructure
         {
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IFilesRepository, FilesRepository>();
+            services.AddScoped<IGroupRepository, GroupsRepository>();
+
             services.AddScoped<MyDbContext>();
             return services;
         }

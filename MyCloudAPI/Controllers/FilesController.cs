@@ -13,10 +13,10 @@ namespace MyCloudAPI.Controllers
     {
         private readonly IFiles _files = files;
         [HttpPost("uploadFile")]
-        public async Task<IActionResult> UploadFile(IFormFile file, int userId)
+        public async Task<IActionResult> UploadFile(IFormFile file, int userId, int groupId)
         {
             var testFile = new FileRecordModel(
-                userId, null, file.FileName, file.Length, DateTime.UtcNow);
+                userId, groupId, file.FileName, file.Length, DateTime.UtcNow);
             await _files.UploadFile(file, testFile.Adapt<FileRecordDTO>());
             return Ok();
         }

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using MyCloudApplication;
+using MyCloudApplication.Services;
 using MyCloudHelper;
 using MyCloudInfrastructure;
 
@@ -81,5 +82,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<FileShareHub>("/fileShareHub"); //ruta pentru hub-ul SignalR
 
 app.Run();

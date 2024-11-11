@@ -82,6 +82,33 @@ namespace MyCloudInfrastructure.Migrations
 
                     b.ToTable("filesAdded");
                 });
+
+            modelBuilder.Entity("MyCloudDomain.Groups.GroupsEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("TotalSpace")
+                        .HasColumnType("double precision");
+
+                    b.Property<int[]>("Users")
+                        .IsRequired()
+                        .HasColumnType("integer[]");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("groups");
+                });
 #pragma warning restore 612, 618
         }
     }

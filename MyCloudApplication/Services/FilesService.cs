@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Options;
 using MyCloudApplication.DTOs;
 using MyCloudApplication.Interfaces;
@@ -12,11 +13,11 @@ namespace MyCloudApplication.Services
 {
     public class FilesService(IFilesRepository filesRepository,
         IOptions<StorageSettingsDTO> storageSettings,
-        IWebHostEnvironment env) : IFiles
+        IHubContext<FileShareHub> hubContext) : IFiles
     {
         private readonly IFilesRepository _fileRepository = filesRepository;
-        private readonly IWebHostEnvironment _env = env;
         private readonly StorageSettingsDTO _storageSettings = storageSettings.Value;
+        private readonly IHubContext<FileShareHub> _hubContext = hubContext;
 
         public async Task UploadFile(IFormFile file, FileRecordDTO fileRecord)
         {
@@ -38,6 +39,13 @@ namespace MyCloudApplication.Services
                 await file.CopyToAsync(stream);
                 await _fileRepository.UploadFile(fileRecord.Adapt<FileRecordEntity>());
             }
+
+            //if (fileRecord.GroupId.HasValue) //notificare utilizatori din grup
+            //{
+            //    await _hubContext.Clients.Group(fileRecord.GroupId.ToString()).SendAsync("ReceiveFileNotification", fileRecord.FileName);
+            //}
+            //double remainingSpace = 324242324223423423 / (1024 * 1024);
+            //await _hubContext.Clients.User(fileRecord.UserId.ToString()).SendAsync("ReceiveRemainingSpace", remainingSpace);
         }
         public async Task<List<GetFileRecordDTO>> GetUserFiles(int userId)
         {
@@ -59,7 +67,7 @@ namespace MyCloudApplication.Services
                     byte[] fileBytes = await File.ReadAllBytesAsync(file.FilePath);
                     fileRecord.FileBase64 = Convert.ToBase64String(fileBytes);
 
-                    fileRecords.Add(fileRecord);
+                    fileRecords.Add(fileRecord); 
                 }
             }
             return fileRecords;
