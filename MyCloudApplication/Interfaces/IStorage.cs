@@ -1,4 +1,4 @@
-﻿using MyCloudApplication.DTOs;
+﻿using MyCloudApplication.DTOs.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;

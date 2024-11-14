@@ -1,4 +1,4 @@
-﻿namespace MyCloudApplication.DTOs
+﻿namespace MyCloudApplication.DTOs.Groups
 {
     public class CreateGroupDTO
     {

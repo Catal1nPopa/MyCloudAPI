@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using MyCloudApplication.DTOs;
+using MyCloudApplication.DTOs.Storage;
 using MyCloudApplication.Interfaces;
 using MyCloudApplication.Services;
 using System.Text;

@@ -1,4 +1,4 @@
-﻿namespace MyCloudApplication.DTOs
+﻿namespace MyCloudApplication.DTOs.Storage
 {
     public class StorageSettingsDTO
     {

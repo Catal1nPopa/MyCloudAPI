@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
-using MyCloudApplication.DTOs;
+using MyCloudApplication.DTOs.Storage;
 using MyCloudApplication.Interfaces;
 using MyCloudHelper;
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyCloudApplication.DTOs
+namespace MyCloudApplication.DTOs.User
 {
     public class AuthRequestDTO
     {

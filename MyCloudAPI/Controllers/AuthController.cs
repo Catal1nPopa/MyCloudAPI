@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyCloudAPI.Models;
-using MyCloudApplication.DTOs;
+using MyCloudApplication.DTOs.User;
 using MyCloudApplication.Interfaces;
 using MyCloudHelper;
 

@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using MyCloudApplication.DTOs;
+using MyCloudApplication.DTOs.Files;
+using MyCloudApplication.DTOs.Storage;
 using MyCloudApplication.Interfaces;
 using MyCloudDomain.Files;
 using MyCloudDomain.Interfaces;
@@ -12,12 +14,14 @@ using System.Text.RegularExpressions;
 namespace MyCloudApplication.Services
 {
     public class FilesService(IFilesRepository filesRepository,
-        IOptions<StorageSettingsDTO> storageSettings,
-        IHubContext<FileShareHub> hubContext) : IFiles
+                            IOptions<StorageSettingsDTO> storageSettings,
+                            IHubContext<FileShareHub> hubContext,
+                            IConfiguration configuration) : IFiles
     {
         private readonly IFilesRepository _fileRepository = filesRepository;
         private readonly StorageSettingsDTO _storageSettings = storageSettings.Value;
         private readonly IHubContext<FileShareHub> _hubContext = hubContext;
+        private readonly IConfiguration _configuration = configuration;
 
         public async Task UploadFile(IFormFile file, FileRecordDTO fileRecord)
         {
@@ -34,23 +38,27 @@ namespace MyCloudApplication.Services
             }
 
             fileRecord.FilePath = filePath;
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-                await _fileRepository.UploadFile(fileRecord.Adapt<FileRecordEntity>());
-            }
 
-            //if (fileRecord.GroupId.HasValue) //notificare utilizatori din grup
-            //{
-            //    await _hubContext.Clients.Group(fileRecord.GroupId.ToString()).SendAsync("ReceiveFileNotification", fileRecord.FileName);
-            //}
-            //double remainingSpace = 324242324223423423 / (1024 * 1024);
-            //await _hubContext.Clients.User(fileRecord.UserId.ToString()).SendAsync("ReceiveRemainingSpace", remainingSpace);
+            FileEncryptionService encryptionService = new FileEncryptionService(_configuration);
+            await encryptionService.EncryptFileAsync(file, filePath);
+
+            await _fileRepository.UploadFile(fileRecord.Adapt<FileRecordEntity>());
+
+            // Dacă există un GroupId, trimitem o notificare către grupul respectiv
+            // if (fileRecord.GroupId.HasValue)
+            // {
+            //     await _hubContext.Clients.Group(fileRecord.GroupId.ToString()).SendAsync("ReceiveFileNotification", fileRecord.FileName);
+            // }
+
+            // Trimiterea informațiilor legate de spațiul disponibil
+            // double remainingSpace = 324242324223423423 / (1024 * 1024);
+            // await _hubContext.Clients.User(fileRecord.UserId.ToString()).SendAsync("ReceiveRemainingSpace", remainingSpace);
         }
         public async Task<List<GetFileRecordDTO>> GetUserFiles(int userId)
         {
             var userFilesPath = await _fileRepository.GetUserFiles(userId);
             var fileRecords = new List<GetFileRecordDTO>();
+
             foreach (var file in userFilesPath)
             {
                 if (File.Exists(file.FilePath))
@@ -64,10 +72,17 @@ namespace MyCloudApplication.Services
                         DateAdded = file.DateAdded
                     };
 
-                    byte[] fileBytes = await File.ReadAllBytesAsync(file.FilePath);
-                    fileRecord.FileBase64 = Convert.ToBase64String(fileBytes);
+                    FileEncryptionService encryptionService = new FileEncryptionService(_configuration);
+                    byte[] decryptedBytes = await encryptionService.DecryptFileAsync(file.FilePath);
+                    var memoryStream = new MemoryStream(decryptedBytes);
 
-                    fileRecords.Add(fileRecord); 
+                    fileRecord.File = new FormFile(memoryStream, 0, memoryStream.Length, null, file.FileName)
+                    {
+                        Headers = new HeaderDictionary(),
+                        ContentType = "application/octet-stream"
+                    };
+
+                    fileRecords.Add(fileRecord);
                 }
             }
             return fileRecords;
