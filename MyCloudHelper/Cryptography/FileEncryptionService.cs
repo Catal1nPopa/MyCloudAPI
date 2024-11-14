@@ -20,6 +20,8 @@ public class FileEncryptionService
         using (Aes aesAlg = Aes.Create())
         {
             aesAlg.Key = _key;
+            aesAlg.Mode = CipherMode.CBC;
+            aesAlg.Padding = PaddingMode.PKCS7;
             aesAlg.GenerateIV();
 
             using (FileStream outputFileStream = new FileStream(outputFilePath, FileMode.Create))
@@ -44,6 +46,8 @@ public class FileEncryptionService
             using (Aes aesAlg = Aes.Create())
             {
                 aesAlg.Key = _key;
+                aesAlg.Mode = CipherMode.CBC;
+                aesAlg.Padding = PaddingMode.PKCS7;
 
                 // Citim IV-ul din fișierul criptat
                 byte[] iv = new byte[aesAlg.BlockSize / 8];
