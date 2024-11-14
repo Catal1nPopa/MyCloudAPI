@@ -1,5 +1,5 @@
 ﻿using Mapster;
-using MyCloudApplication.DTOs;
+using MyCloudApplication.DTOs.Groups;
 using MyCloudApplication.Interfaces;
 using MyCloudDomain.Groups;
 using MyCloudDomain.Interfaces;

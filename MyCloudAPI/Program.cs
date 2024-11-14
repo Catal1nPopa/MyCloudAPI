@@ -15,6 +15,7 @@ var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").B
 
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructure();
+builder.Services.AddSingleton<FileEncryptionService>();
 //builder.Services.Configure<string>(builder.Configuration.GetSection("StorageSettings"));
 
 builder.Services.AddControllers();

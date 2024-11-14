@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MyCloudApplication.DTOs;
+using MyCloudApplication.DTOs.Groups;
 using MyCloudApplication.Interfaces;
 
 namespace MyCloudAPI.Controllers

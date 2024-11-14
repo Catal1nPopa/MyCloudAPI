@@ -10,6 +10,7 @@ namespace MyCloudApplication.DTOs.Files
         public string FileName { get; set; }
         public long FileLength { get; set; }
         public DateTime DateAdded { get; set; }
-        public string FileBase64 { get; set; }
+        //public string FileBase64 { get; set; }
+        public IFormFile File { get; set; }
     }
 }
