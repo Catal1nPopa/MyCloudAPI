@@ -15,7 +15,8 @@ public class FileEncryptionService
         _key = Convert.FromBase64String(encryptionKeyBase64);
     }
 
-    public async Task EncryptFileAsync(IFormFile inputFile, string outputFilePath)
+    //daca fisierul va fi private/ only me atunci se poate de adaugat  id la user in fisierul criptat
+    public async Task EncryptFileAsync(IFormFile inputFile, string outputFilePath, int userId)
     {
         using (Aes aesAlg = Aes.Create())
         {

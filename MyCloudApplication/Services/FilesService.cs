@@ -40,7 +40,7 @@ namespace MyCloudApplication.Services
             fileRecord.FilePath = filePath;
 
             FileEncryptionService encryptionService = new FileEncryptionService(_configuration);
-            await encryptionService.EncryptFileAsync(file, filePath);
+            await encryptionService.EncryptFileAsync(file, filePath, fileRecord.UserId);
 
             await _fileRepository.UploadFile(fileRecord.Adapt<FileRecordEntity>());
 

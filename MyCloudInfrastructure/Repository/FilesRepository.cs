@@ -12,7 +12,7 @@ namespace MyCloudInfrastructure.Repository
         {
             try
             {
-                return await _myDbContext.filesAdded
+                return await _myDbContext.files
                     .Where(file => file.GroupId == groupId)
                     .ToListAsync();
             }
@@ -26,7 +26,7 @@ namespace MyCloudInfrastructure.Repository
         {
             try
             {
-                return await _myDbContext.filesAdded
+                return await _myDbContext.files
                     .Where(file => file.UserId == userId)
                     .ToListAsync();
             }
@@ -40,7 +40,7 @@ namespace MyCloudInfrastructure.Repository
         {
             try
             {
-                _myDbContext.filesAdded.Add(fileRecord);
+                _myDbContext.files.Add(fileRecord);
                 await _myDbContext.SaveChangesAsync();
             }
             catch(PostgresException ex)

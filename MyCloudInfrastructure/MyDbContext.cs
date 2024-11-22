@@ -6,8 +6,10 @@ using MyCloudDomain.Groups;
 public class MyDbContext : DbContext
 {
     public DbSet<CreateUserLoginEntitiy> usersLogins { get; set; }
-    public DbSet<FileRecordEntity> filesAdded { get; set; }
+    public DbSet<FileRecordEntity> files { get; set; }
     public DbSet<GroupsEntity> groups { get; set; }
+    public DbSet<UserEntity> users { get; set; }
+    public DbSet<UserGroup> userGroup  { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
