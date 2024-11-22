@@ -54,8 +54,7 @@ namespace MyCloudAPI.Controllers
                         }
                     }
                 }
-            }
-
+            } 
             memoryStream.Position = 0;
             return File(memoryStream, "application/zip", $"User_{userId}_Files.zip");
         }
