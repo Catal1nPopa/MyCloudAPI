@@ -1,11 +1,10 @@
-﻿using MyCloudDomain.Groups;
+﻿using Microsoft.EntityFrameworkCore;
+using MyCloudDomain.Groups;
 using MyCloudDomain.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace MyCloudInfrastructure.Repository
 {
-    public class GroupsRepository(MyDbContext myDbContext)  : IGroupRepository
+    public class GroupsRepository(MyDbContext myDbContext) : IGroupRepository
     {
         private readonly MyDbContext _myDbContext = myDbContext;
 

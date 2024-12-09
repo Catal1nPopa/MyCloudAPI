@@ -1,10 +1,9 @@
 ﻿using Mapster;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyCloudAPI.Models;
 using MyCloudApplication.DTOs.Files;
 using MyCloudApplication.Interfaces;
-using System.IO.Compression;
 using System.IO.Compression;
 namespace MyCloudAPI.Controllers
 {
@@ -13,6 +12,8 @@ namespace MyCloudAPI.Controllers
     public class FilesController(IFiles files) : ControllerBase
     {
         private readonly IFiles _files = files;
+
+        [Authorize]
         [HttpPost("uploadFile")]
         public async Task<IActionResult> UploadFile(IFormFile file, int userId, int groupId)
         {
@@ -27,6 +28,7 @@ namespace MyCloudAPI.Controllers
         //{
         //    return Ok(await _files.GetUserFiles(userId));
         //}
+        [Authorize]
         [HttpGet("downloadAllUserFiles")]
         public async Task<IActionResult> DownloadAllUserFiles(int userId)
         {
@@ -50,11 +52,11 @@ namespace MyCloudAPI.Controllers
                         using (var entryStream = zipEntry.Open())
                         using (var fileStream = fileRecord.File.OpenReadStream())
                         {
-                            await fileStream.CopyToAsync(entryStream);  
+                            await fileStream.CopyToAsync(entryStream);
                         }
                     }
                 }
-            } 
+            }
             memoryStream.Position = 0;
             return File(memoryStream, "application/zip", $"User_{userId}_Files.zip");
         }

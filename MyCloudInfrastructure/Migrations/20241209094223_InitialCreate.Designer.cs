@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyCloudInfrastructure.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20241111125055_AddGorps")]
-    partial class AddGorps
+    [Migration("20241209094223_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,7 +50,56 @@ namespace MyCloudInfrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("usersLogins");
+                    b.ToTable("user_credentials");
+                });
+
+            modelBuilder.Entity("MyCloudDomain.Auth.UserEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("AllocatedSpace")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("AvailableSpace")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Company")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ContratDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DateAdd")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Function")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<byte[]>("UserImage")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("users");
                 });
 
             modelBuilder.Entity("MyCloudDomain.Files.FileRecordEntity", b =>
@@ -83,7 +132,7 @@ namespace MyCloudInfrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("filesAdded");
+                    b.ToTable("files");
                 });
 
             modelBuilder.Entity("MyCloudDomain.Groups.GroupsEntity", b =>
@@ -111,6 +160,29 @@ namespace MyCloudInfrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("groups");
+                });
+
+            modelBuilder.Entity("MyCloudDomain.Groups.UserGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserRole")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("user_group");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MyCloudDomain.Groups
+﻿namespace MyCloudDomain.Groups
 {
     public class UserGroup
     {
-        public int userId { get; set; }
-        public int groupId { get; set; }
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public int GroupId { get; set; }
+        public string UserRole { get; set; }
     }
 }

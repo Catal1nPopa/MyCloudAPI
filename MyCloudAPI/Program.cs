@@ -8,6 +8,16 @@ using MyCloudInfrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 builder.Host.ConfigureSerilog();
 builder.Services.ConfigureJWT(builder.Configuration);
 
@@ -51,7 +61,7 @@ builder.Services.AddSwaggerGen(c =>
 //MappingConfig.RegisterMappings();
 
 var app = builder.Build();
-
+app.UseCors("AllowAll");
 
 using (var scope = app.Services.CreateScope())
 {
@@ -60,7 +70,7 @@ using (var scope = app.Services.CreateScope())
     try
     {
         LoggerHelper.LogInformation("Initializare baza de date");
-       var context = services.GetRequiredService<MyDbContext>();
+        var context = services.GetRequiredService<MyDbContext>();
         //context.Database.EnsureCreated();
         context.Database.Migrate();
         LoggerHelper.LogInformation("Initializare finisata");

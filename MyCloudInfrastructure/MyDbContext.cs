@@ -5,11 +5,11 @@ using MyCloudDomain.Groups;
 
 public class MyDbContext : DbContext
 {
-    public DbSet<CreateUserLoginEntitiy> usersLogins { get; set; }
+    public DbSet<CreateUserLoginEntitiy> user_credentials { get; set; }
     public DbSet<FileRecordEntity> files { get; set; }
     public DbSet<GroupsEntity> groups { get; set; }
     public DbSet<UserEntity> users { get; set; }
-    public DbSet<UserGroup> userGroup  { get; set; }
+    public DbSet<UserGroup> user_group { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

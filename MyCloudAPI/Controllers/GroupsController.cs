@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyCloudApplication.DTOs.Groups;
 using MyCloudApplication.Interfaces;
 
@@ -11,14 +10,14 @@ namespace MyCloudAPI.Controllers
     {
         private readonly IGroups _groups = groups;
 
-        [HttpPost("createGroups")]
+        [HttpPost]
         public async Task <IActionResult> createGroup([FromBody] CreateGroupDTO createGroupDTO)
         {
             await _groups.createGroup(createGroupDTO);
             return Ok();
         }
 
-        [HttpGet("getGroups")]
+        [HttpGet]
         public async Task <IActionResult> getUserGroups(int id)
         {
             return Ok(await _groups.getGroupByUserId(id));
