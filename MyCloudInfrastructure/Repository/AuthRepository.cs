@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyCloudDomain.Auth;
 using MyCloudDomain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyCloudInfrastructure.Repository
 {
@@ -17,10 +12,11 @@ namespace MyCloudInfrastructure.Repository
         {
             try
             {
-                _context.usersLogins.Add(createUser);
+                _context.user_credentials.Add(createUser);
                 await _context.SaveChangesAsync();
                 return true;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return false;
             }
@@ -29,7 +25,7 @@ namespace MyCloudInfrastructure.Repository
         public async Task<CreateUserLoginEntitiy> getUserByUsername(string username)
         {
             //return await _context.AuthEntities.FindAsync(1);   
-            return await _context.usersLogins.FirstOrDefaultAsync(user => user.UserName == username);
+            return await _context.user_credentials.FirstOrDefaultAsync(user => user.UserName == username);
         }
     }
 }

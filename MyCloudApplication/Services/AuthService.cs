@@ -41,7 +41,7 @@ namespace MyCloudApplication.Services
                 var tokenDescriptor = new SecurityTokenDescriptor()
                 {
                     Subject = identity,
-                    Expires = DateTime.Now.AddMinutes(30),
+                    Expires = DateTime.Now.AddMinutes(1),
                     SigningCredentials = credentials
                 };
                 var token = jwtHandler.CreateToken(tokenDescriptor);
@@ -66,7 +66,7 @@ namespace MyCloudApplication.Services
                 32);
 
             return Convert.ToHexString(hash);
-        } 
+        }
 
         public async Task<bool> CreateUserLogin(CreateUserLoginDTO userDTO)
         {

@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-namespace MyCloudDomain.Files
+﻿namespace MyCloudDomain.Files
 {
     public class FileRecordEntity
     {

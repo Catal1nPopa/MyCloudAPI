@@ -7,13 +7,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyCloudInfrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddGorps : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "filesAdded",
+                name: "files",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -27,7 +27,7 @@ namespace MyCloudInfrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_filesAdded", x => x.Id);
+                    table.PrimaryKey("PK_files", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,7 +47,7 @@ namespace MyCloudInfrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "usersLogins",
+                name: "user_credentials",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -59,7 +59,44 @@ namespace MyCloudInfrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_usersLogins", x => x.Id);
+                    table.PrimaryKey("PK_user_credentials", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "user_group",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    GroupId = table.Column<int>(type: "integer", nullable: false),
+                    UserRole = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_user_group", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Surname = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    AllocatedSpace = table.Column<double>(type: "double precision", nullable: false),
+                    AvailableSpace = table.Column<double>(type: "double precision", nullable: false),
+                    DateAdd = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Company = table.Column<string>(type: "text", nullable: false),
+                    ContratDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Function = table.Column<string>(type: "text", nullable: false),
+                    UserImage = table.Column<byte[]>(type: "bytea", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_users", x => x.Id);
                 });
         }
 
@@ -67,13 +104,19 @@ namespace MyCloudInfrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "filesAdded");
+                name: "files");
 
             migrationBuilder.DropTable(
                 name: "groups");
 
             migrationBuilder.DropTable(
-                name: "usersLogins");
+                name: "user_credentials");
+
+            migrationBuilder.DropTable(
+                name: "user_group");
+
+            migrationBuilder.DropTable(
+                name: "users");
         }
     }
 }
